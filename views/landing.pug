@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+  head
+    title="Books"
+  body
+    H2 
+      |All the books in the bookstore!
+    br
+    table(cellpadding = "10")
+      th Name
+      th Price
+      th More Info
+      each val in books
+        tr
+          td #{val.name}
+          td #{val.price}
+          td
+            a(href=val.url) Get Info
+            
+    p I want to 
+      a(href= "http://localhost:8080//login.html") purchase something
+      |!
+    block content
