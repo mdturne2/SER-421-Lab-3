@@ -67,7 +67,7 @@ app.get('/landing', function (req, res) {
 
 app.get('//login.html', function (req, res) {
     
-  res.render("landing");
+  res.render("login");
   console.log('Response Finished? ' + res.finished);
   console.log('\nHeaders Sent: ');
   console.log(res.headersSent);
