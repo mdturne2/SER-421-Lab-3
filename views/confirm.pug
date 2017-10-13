@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+	head
+		title="confirm"
+	body
+		p Purchase Successful
+		table
+			tr
+				td Customer:
+				td #{val}
+			tr
+				td Card:
+				td #{val}
+			tr
+				td Card number:
+				td #{val}
+			tr
+				td Amount:
+				td #{val}
+			tr
+				td Express Delivery:
+				td #{val}
+		br
+		a(href=/list) BUY MORE BOOKS
+		br
+		a(href=/landing) LOGOUT
+		block content

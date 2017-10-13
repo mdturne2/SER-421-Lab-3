@@ -1,0 +1,23 @@
+doctype html
+html (lang="en")
+	head
+		title="index"
+	body
+		br Please the following information
+		form(action="/purchase", method="post")
+			table border="0"
+				tbody
+					tr
+						td Name:
+						td #{val}
+					tr
+						td Quantity
+						td input(name="quantity",type="text",size="4",maxlength="12")
+					tr
+						td Books
+						td select(size="9",name="Books",multiple="multiple")
+							each val in books
+							option(value=#{val.id}) #{val.name}
+			br input(type="submit",name="SUBMIT")
+			a (href= "/landing") LOGOUT
+			block content

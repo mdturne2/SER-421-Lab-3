@@ -1,0 +1,25 @@
+doctype transitional
+html(lang="en")
+  head
+    title="Bookstore: Login page"
+  body
+    h1 Bookstore: Login page
+    if loginFail
+      p
+        h3 Login failed! Please try again
+    form(action="login", method="post")
+      table(width = "75%")
+        tbody
+          tr
+            td(width = "48%") Enter your name
+            td(width = "52%")
+              input(name = "name", type = "text")
+        tr
+            td(width = "48%") Enter your password
+            td(width = "52%")
+              input(name = "pwd", type = "text")
+      p
+        input(name="Submit",value="Login",type="submit")
+        input(name="Reset",value="Reset form",type="reset")
+    
+    block content
