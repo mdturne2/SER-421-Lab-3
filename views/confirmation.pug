@@ -1,0 +1,37 @@
+doctype transitional
+html(lang="en")
+  head
+    title="validate"
+    meta(http-equiv='Cache-Control' , CONTENT = 'no-cache')
+    meta(http-equiv='Cache-Control' , CONTENT = 'max-age=0')
+    meta(http-equiv="expires" , content="0")
+    meta(http-equiv='pragma', content='no-cache')
+  body
+    p Purchase Successful
+    table(border='0')
+      tbody
+        tr
+          td Customer:
+          td #{userName}
+        tr
+          td
+            span Card:
+          td #{CreditCard}
+        tr
+          td Card number:
+          td #{cardNumber}
+        tr
+          td Amount:
+          td #{purchaseTotal}
+        tr
+          td Express Delivery:
+          if expressDelivery
+            td Yes
+          else
+            td No
+    
+    br
+    a(href='/list') BUY MORE BOOKS
+    br
+    a(href='/landing') LOGOUT
+  block content

@@ -53,7 +53,7 @@ app.listen(8080);
 //##;D
 app.get('/', function (req, res) {
  
-    res.render("landingTest")
+  res.redirect('/landing')
   console.log('Response Finished? ' + res.finished);
   console.log('\nHeaders Sent: ');
   console.log(res.headersSent);
@@ -112,25 +112,54 @@ app.get('//list',function (req, res) {
   console.log(res.headersSent);
 });
 
+app.get('/list',function (req, res) {
+    if(req.session.restricted)
+    {
+      //res.set('Cache-Control', 'no-cache, max-age=0 private, no-store, must-revalidate'); //does not allow back button
+      app.locals.userName = req.session.userName;
+      res.render("list");
+    }
+    else
+        res.redirect('/landing');
+  console.log('Response Finished? ' + res.finished);
+  console.log('\nHeaders Sent: ');
+  console.log(res.headersSent);
+});
+
 app.post('/purchase',function (req, res) {
     if(req.session.restricted)
     {
       //res.set('Cache-Control', 'no-cache, max-age=0 private, no-store, must-revalidate'); //does not allow back button
+        
       var quantity = req.body.Quantity;
+      app.locals.invalidQuantity = false;
+
+      if(quantity == '')
+    {
+        app.locals.invalidQuantity = true;
+         res.render('list')
+    }
+      else{
+      var purchaseTotal = 0;
       var recievedBooks = req.body.Books;
-        app.locals.boughtBooks = [];
-        app.locals.bookTotalCost = [];
+        req.session.boughtBooks = [];
       //TODO need to grab the cost and title of each book 
       for(var id in recievedBooks){
           var currentBook = getBook(recievedBooks[id],booksObject.books);
-          app.locals.quantity = quantity;
-          app.locals.boughtBooks.push(currentBook);
-          app.locals.bookTotalCost.push(currentBook.price * quantity);
+          req.session.quantity = quantity;
+          req.session.boughtBooks.push(currentBook);
+          req.session.boughtBooks[id].total = currentBook.price * quantity;
+          purchaseTotal+= currentBook.price * quantity;
           }
+      req.session.purchaseTotal = purchaseTotal
+      app.locals.purchaseTotal = req.session.purchaseTotal;
+      app.locals.boughtBooks = req.session.boughtBooks;
+      app.locals.quantity = req.session.quantity;
+      
         
       app.locals.userName = req.session.userName;
       res.render("validate");
-    }
+    }}
     else
         res.redirect('/landing');
   console.log('Response Finished? ' + res.finished);
@@ -145,11 +174,41 @@ app.get('/purchase',function (req, res) {
   console.log(res.headersSent);
 });
 
+app.post('/confirm',function (req, res) {
+  if(req.session.restricted)
+    {
+      req.session.CreditCard = req.body.Creditcard;
+      req.session.cardNumber = req.body.CardNumber;    
+      req.session.expressDelivery = req.body.expressdelivery;    
+      app.locals.userName = req.session.userName;
+      app.locals.CreditCard = req.session.CreditCard;
+      app.locals.cardNumber = req.session.cardNumber;
+      app.locals.expressDelivery = req.session.expressDelivery;
+      
+      res.render("confirmation");
+    }
+    else
+        res.redirect('/landing');
+    
+  console.log('Response Finished? ' + res.finished);
+  console.log('\nHeaders Sent: ');
+  console.log(res.headersSent);
+});
+
+app.get('/confirm',function (req, res) {
+
+  res.redirect('/landing');  
+  console.log('Response Finished? ' + res.finished);
+  console.log('\nHeaders Sent: ');
+  console.log(res.headersSent);
+});
+
 //definitely gotta remove this bit later ##;D
 app.get('/error', function (req, res) {
   res.status(400);
-  res.send("This is a bad request.");
+  res.send("This is a bad request. Very bad. How unfortunate :(");
 });
+
 
 
 function getBook(key, data) {
