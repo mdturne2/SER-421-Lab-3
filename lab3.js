@@ -37,6 +37,8 @@ var booksObject = JSON.parse(BooksJSON);
 //set the books in the libarary 
 app.locals.books = booksObject.books;
 
+      console.log(booksObject.books.length);
+
 
 //session stuff 
 app.use(session({
@@ -116,9 +118,16 @@ app.post('/purchase',function (req, res) {
       //res.set('Cache-Control', 'no-cache, max-age=0 private, no-store, must-revalidate'); //does not allow back button
       var quantity = req.body.Quantity;
       var recievedBooks = req.body.Books;
-      console.log(getValue(recievedBooks,booksObject.books));
+        app.locals.boughtBooks = [];
+        app.locals.bookTotalCost = [];
       //TODO need to grab the cost and title of each book 
-      
+      for(var id in recievedBooks){
+          var currentBook = getBook(recievedBooks[id],booksObject.books);
+          app.locals.quantity = quantity;
+          app.locals.boughtBooks.push(currentBook);
+          app.locals.bookTotalCost.push(currentBook.price * quantity);
+          }
+        
       app.locals.userName = req.session.userName;
       res.render("validate");
     }
@@ -129,6 +138,12 @@ app.post('/purchase',function (req, res) {
   console.log(res.headersSent);
 });
 
+app.get('/purchase',function (req, res) {
+    res.redirect('/landing')
+  console.log('Response Finished? ' + res.finished);
+  console.log('\nHeaders Sent: ');
+  console.log(res.headersSent);
+});
 
 //definitely gotta remove this bit later ##;D
 app.get('/error', function (req, res) {
@@ -137,13 +152,15 @@ app.get('/error', function (req, res) {
 });
 
 
-function getValue(key, data) {
-    var i 
+function getBook(key, data) {
+    var i;
     var length = data.length;
     
     for (i = 0; i < length; i++) {
-        if (data[i].hasOwnProperty(key)) {
-            return data[i][key];
+        console.log(data[i].id);
+        console.log(key);
+        if (data[i].id == key) {
+            return data[i];
         }
     }
     

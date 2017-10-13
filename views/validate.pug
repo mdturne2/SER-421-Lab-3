@@ -20,6 +20,8 @@ html(lang="en")
             b Unit Cost
           td
             b Total Cost
-        
+        each val in boughtBooks
+          td(align='left') #{val.name}
+          
       
     block content
