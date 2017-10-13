@@ -1,0 +1,25 @@
+doctype transitional
+html(lang="en")
+  head
+    title="validate"
+    meta(http-equiv='Cache-Control' , CONTENT = 'no-cache')
+    meta(http-equiv='Cache-Control' , CONTENT = 'max-age=0')
+    meta(http-equiv="expires" , content="0")
+    meta(http-equiv='pragma', content='no-cache')
+  body
+    h3 Thank you #{userName}
+    p Your Order
+    table(border="2", style = "padding: 1in", cellpadding="2")
+      tbody
+        tr
+          td
+            b Book
+          td
+            b Quantity
+          td
+            b Unit Cost
+          td
+            b Total Cost
+        
+      
+    block content
