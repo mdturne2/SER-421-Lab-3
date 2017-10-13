@@ -2,12 +2,16 @@ var express = require('express');
 var url = require('url');
 var app = express();
 var pug = require('pug')
+var bodyParser = require('body-parser');
 
 //setup templates path and view engine as pug
 app.set("views","./views");
 app.set("view engine","pug");
 app.engine("pug",pug.__express);
 
+//used to get info from login page
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 //specified in part 1
 var BooksJSON = '{ \
    "books":[  \
@@ -28,7 +32,6 @@ var BooksJSON = '{ \
 
 //turn books json string into a json object
 var booksObject = JSON.parse(BooksJSON);
-console.log(booksObject.books);
 
 //set the books in the libarary 
 app.locals.books = booksObject.books;
@@ -68,6 +71,23 @@ app.get('/landing', function (req, res) {
 app.get('//login.html', function (req, res) {
     
   res.render("login");
+  console.log('Response Finished? ' + res.finished);
+  console.log('\nHeaders Sent: ');
+  console.log(res.headersSent);
+});
+
+app.post('//login', function (req, res) {
+    
+  if(req.body.name != '' &&req.body.name == req.body.pwd)
+    {
+      res.render('loginSuccess');
+    }
+  else
+    {
+      app.locals.loginFail = true;
+      res.render('login');
+    }
+  app.locals.loginFail = false;
   console.log('Response Finished? ' + res.finished);
   console.log('\nHeaders Sent: ');
   console.log(res.headersSent);
