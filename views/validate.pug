@@ -20,12 +20,18 @@ html(lang="en")
             b Unit Cost
           td
             b Total Cost
-        each val in boughtBooks
-          tr
-            td(align='left') #{val.name}
-            td(align='right') #{quantity}
-            td(align = 'right') #{val.price}
-            td(align = 'right') #{val.total}
+        if singleSelection
+          td(align='left') #{boughtBooks.name}
+          td(align='right') #{quantity}
+          td(align = 'right') #{boughtBooks.price}
+          td(align = 'right') #{boughtBooks.total}
+        else
+          each val in boughtBooks
+            tr
+              td(align='left') #{val.name}
+              td(align='right') #{quantity}
+              td(align = 'right') #{val.price}
+              td(align = 'right') #{val.total}
     p Total cost is #{purchaseTotal}        
     p
       br

@@ -137,13 +137,24 @@ app.post('/purchase',function (req, res) {
       if(quantity == '')
     {
         app.locals.invalidQuantity = true;
-         res.render('list')
+         res.render('list');
     }
       else{
+      
+      app.locals.singleSelection = false;
       var purchaseTotal = 0;
       var recievedBooks = req.body.Books;
         req.session.boughtBooks = [];
-      //TODO need to grab the cost and title of each book 
+      
+      if(typeof recievedBooks === 'string'){
+          app.locals.singleSelection = true;
+          var currentBook = getBook(recievedBooks,booksObject.books);
+          req.session.quantity = quantity;
+          req.session.boughtBooks = currentBook;
+          req.session.boughtBooks.total = currentBook.price * quantity;
+          purchaseTotal+= currentBook.price * quantity;
+    }
+      else{
       for(var id in recievedBooks){
           var currentBook = getBook(recievedBooks[id],booksObject.books);
           req.session.quantity = quantity;
@@ -151,12 +162,13 @@ app.post('/purchase',function (req, res) {
           req.session.boughtBooks[id].total = currentBook.price * quantity;
           purchaseTotal+= currentBook.price * quantity;
           }
+      }
       req.session.purchaseTotal = purchaseTotal
       app.locals.purchaseTotal = req.session.purchaseTotal;
       app.locals.boughtBooks = req.session.boughtBooks;
       app.locals.quantity = req.session.quantity;
       
-        
+      
       app.locals.userName = req.session.userName;
       res.render("validate");
     }}
@@ -216,8 +228,6 @@ function getBook(key, data) {
     var length = data.length;
     
     for (i = 0; i < length; i++) {
-        console.log(data[i].id);
-        console.log(key);
         if (data[i].id == key) {
             return data[i];
         }
