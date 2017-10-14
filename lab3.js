@@ -134,11 +134,12 @@ app.post('/purchase',function (req, res) {
       var quantity = req.body.Quantity;
       app.locals.invalidQuantity = false;
 
-      if(quantity == '')
-    {
-        app.locals.invalidQuantity = true;
-         res.render('list');
-    }
+      if(quantity == '' || isNaN(parseInt(quantity)) )
+        {
+            console.log(typeof quantity);
+            app.locals.invalidQuantity = true;
+            res.render('list');
+        }
       else{
       
       app.locals.singleSelection = false;
