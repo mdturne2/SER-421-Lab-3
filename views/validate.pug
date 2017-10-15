@@ -49,7 +49,7 @@ html(lang="en")
           tr
             td Card Number
             td(width='92')
-              input(type='text', name='CardNumber', size='16', pattern='[0-9][16]' required)
+              input(type='text', name='CardNumber', pattern='[0-9]{4}[ ]{1}[0-9]{4}[ ]{1}[0-9]{4}[ ]{1}[0-9]{4}' size='16' required placeholder='Enter with spaces')
           tr
             td Express Delivery
             td(width='92')
